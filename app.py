@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify, session
 from uuid import uuid4
+import json
 
 from boggle import BoggleGame, LETTERS_BY_FREQ
 
@@ -33,17 +34,20 @@ def new_game():
 @app.route("/api/score-word", methods=["POST"])
 def score_word():
     """ Check if word is legal """
+    json_obj = request.get_json()
 
-    word = request.args["word"]
-    game_id = request.args["game_id"]
+    word = json_obj["word"]
+
+    game_id = json_obj["game_id"]
     game = games[game_id]
+    # breakpoint()
     result = {}
 
-    if word not in game.word_list:
-        result["result"] = result.get("result", "not-word")
-    elif word not in game.board:
-        result["result"] = result.get("result", "not-on-board")
+    if not game.is_word_in_word_list(word):
+        result["result"] = "not-word"
+    elif not game.check_word_on_board(word):
+        result["result"] = "not-on-board"
     else:
-        result["result"] = result.get("result", "ok")
+        result["result"] = "ok"
 
     return jsonify(result)
