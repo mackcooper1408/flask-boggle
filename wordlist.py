@@ -11,6 +11,7 @@ class WordList:
             >>> wl = WordList("test_dictionary.txt")
             >>> wl.words == {'CAT', 'DOG'}
             True
+
         """
 
         self.words = self._read_dict(dict_path)
@@ -27,7 +28,21 @@ class WordList:
         return words
 
     def check_word(self, word):
-        """Is word in word list?"""
+        """Is word in word list?
+
+            >>> wl = WordList("test_dictionary.txt")
+            >>> wl.check_word("CAT")
+            True
+
+            # can't use lower case
+            >>> wl.check_word("cat")
+            False
+
+            # not in dictionary
+            >>> wl.check_word("PORCUPINE")
+            False
+
+        """
 
         return word in self.words
 
