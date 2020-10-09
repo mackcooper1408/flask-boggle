@@ -35,12 +35,12 @@ def new_game():
 def score_word():
     """ Check if word is legal """
     json_obj = request.get_json()
+    # breakpoint()
 
     word = json_obj["word"]
 
-    game_id = json_obj["game_id"]
+    game_id = json_obj["gameId"]
     game = games[game_id]
-    # breakpoint()
     result = {}
 
     if not game.is_word_in_word_list(word):
