@@ -58,15 +58,17 @@ class BoggleAppTestCase(TestCase):
             ]
             games[game_id].board = board
             game = games[game_id]
+
             post_req = client.post('/api/score-word',
                                    json={"gameId": game_id,
                                          "word": "CAT"})
 
             self.assertEqual(post_req.status_code, 200)
             self.assertEqual(post_req.get_json(), {"result": "ok"})
-            self.assertTrue(games[game_id])
+
             self.assertTrue(game.is_word_in_word_list("CAT"))
             self.assertTrue(game.check_word_on_board("CAT"))
+
             self.assertFalse(game.is_word_in_word_list("cat"))
             self.assertFalse(game.is_word_in_word_list("CATIPUS"))
             self.assertFalse(game.check_word_on_board("HELLO"))
